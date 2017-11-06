@@ -1,0 +1,55 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper "*,AngularSpa"
+@model AngularSpa.ViewModels.OrderInfo
+
+@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>Examples of Angular 4 data served by ASP.Net Core Web API:</p>
+<form #testForm="ngForm">
+    <div *ngIf="orderInfo != null">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Data Entry</div>
+                    <div class="panel-body">
+                        
+                        <tag-di for="UserId"></tag-di>
+                        <tag-di for="Currency"></tag-di>
+                        <tag-di for="EmailAddress"></tag-di>
+                        <tag-di for="Description"></tag-di>
+
+                        <div class="panel-footer">
+                            <button type="button" class="btn btn-warning" (click)="addOrder($event)">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Data Display</div>
+                    <div class="panel-body">
+
+                        <tag-dd for="Id"></tag-dd>
+                        <tag-dd for="UserId"></tag-dd> 
+                        <tag-dd for="Currency" pipe="currency:'USD':true:'1.2-2'"></tag-dd>
+                        <tag-dd for="EmailAddress"></tag-dd> 
+                        <tag-dd for="Description"></tag-dd> 
+
+                    </div>
+                    <div class="panel-footer">
+                        <button type="button" class="btn btn-info" (click)="getOrder()">Get Last Record</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="errorMessage != null">
+    <p>Error:</p>
+    <pre>{{ errorMessage  }}</pre>
+</div>

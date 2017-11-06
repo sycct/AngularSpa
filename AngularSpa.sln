@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularSpa", "AngularSpa\AngularSpa.csproj", "{D6E0F88C-0DB3-4D90-88A1-99174EC4A17A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AFBCC305-2667-41D9-BFFE-B830473B8908} = {AFBCC305-2667-41D9-BFFE-B830473B8908}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaDatasource", "SpaDatasource\SpaDatasource.csproj", "{AFBCC305-2667-41D9-BFFE-B830473B8908}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6E0F88C-0DB3-4D90-88A1-99174EC4A17A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6E0F88C-0DB3-4D90-88A1-99174EC4A17A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6E0F88C-0DB3-4D90-88A1-99174EC4A17A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6E0F88C-0DB3-4D90-88A1-99174EC4A17A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFBCC305-2667-41D9-BFFE-B830473B8908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFBCC305-2667-41D9-BFFE-B830473B8908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFBCC305-2667-41D9-BFFE-B830473B8908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFBCC305-2667-41D9-BFFE-B830473B8908}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {012C12F5-B35D-4AE1-BA22-464C0B38BA81}
+	EndGlobalSection
+EndGlobal
