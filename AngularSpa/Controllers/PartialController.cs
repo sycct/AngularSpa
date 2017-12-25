@@ -15,5 +15,13 @@ namespace AngularSpa.Controllers
         public IActionResult ContactComponent() => PartialView();
 
         public IActionResult IndexComponent() => PartialView();
+
+        public IActionResult LoginComponent() => PartialView();
+
+        public IActionResult RegisterComponent() => PartialView();
+
+        public IActionResult ProfileComponent() => PartialView();
+
+        public IActionResult CartComponent() => PartialView();
     }
 }

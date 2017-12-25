@@ -22,18 +22,19 @@ namespace AngularSpa.TagHelpers
             string shortName   = model.DisplayName ?? For.Name;
             string labelText   = model.Placeholder ?? shortName;
             string description = model.Description ?? labelText;
+            string propName    = For.AngularPropertyName();
 
             var labelTag = new TagBuilder("label");
             labelTag.InnerHtml.Append(description);
-            labelTag.MergeAttribute("for", For.AngularPropertyName());
+            labelTag.MergeAttribute("for", propName);
             labelTag.AddCssClass("control-label");
 
             var inputTag = new TagBuilder("input");
             inputTag.AddCssClass("form-control");
             inputTag.TagRenderMode = TagRenderMode.StartTag;
-            inputTag.MergeAttribute("id", For.AngularPropertyName());
-            inputTag.MergeAttribute("name", For.AngularPropertyName());
-            inputTag.MergeAttribute("placeholder", shortName);
+            inputTag.MergeAttribute("id", propName);
+            inputTag.MergeAttribute("name", propName);
+            inputTag.MergeAttribute("placeholder", model.Placeholder);
             inputTag.MergeAttribute("[(ngModel)]", For.AngularName());
 
             string typeName = "text";
@@ -54,13 +55,15 @@ namespace AngularSpa.TagHelpers
             inputTag.MergeAttribute("type", typeName);
 
             TagBuilder validationBox = new TagBuilder("div");
+            validationBox.MergeAttribute("class", "alert alert-danger");
+            validationBox.MergeAttribute("*ngIf", propName + ".errors && (" + propName + ".dirty || " + propName + ".touched)");
 
             string regex = model.RegexExpression();
             if(regex != string.Empty)
             {
                 var regexValidation = new TagBuilder("div");
-                regexValidation.MergeAttribute("[hidden]", string.Format("!{0}.errors.pattern", For.AngularPropertyName()));
-                regexValidation.InnerHtml.Append(string.Format("{0} is invalid", labelText));
+                regexValidation.MergeAttribute("[hidden]", string.Format("!{0}.errors.pattern", propName));
+                regexValidation.InnerHtml.Append(string.Format("{0} введено неверно.", labelText));
                 validationBox.InnerHtml.AppendHtml(regexValidation);
                 inputTag.Attributes.Add("pattern", ((DefaultModelMetadata)For.Metadata).RegexExpression());
             }
@@ -69,8 +72,8 @@ namespace AngularSpa.TagHelpers
             if(value != null)
             {
                 var minLengthValidation = new TagBuilder("div");
-                minLengthValidation.MergeAttribute("[hidden]", string.Format("!{0}.errors.minlength", For.AngularPropertyName()));
-                minLengthValidation.InnerHtml.Append(string.Format("{0} must be at least {1} characters long", labelText, value));
+                minLengthValidation.MergeAttribute("[hidden]", string.Format("!{0}.errors.minlength", propName));
+                minLengthValidation.InnerHtml.Append(string.Format("{0} должно быть максимум {1} символ(а) длиной.", labelText, value));
                 validationBox.InnerHtml.AppendHtml(minLengthValidation);
                 inputTag.Attributes.Add("minlength", value.ToString());
             }
@@ -79,25 +82,22 @@ namespace AngularSpa.TagHelpers
             if (value != null)
             {
                 var maxLengthValidation = new TagBuilder("div");
-                maxLengthValidation.MergeAttribute("[hidden]", string.Format("!{0}.errors.maxlength", For.AngularPropertyName()));
-                maxLengthValidation.InnerHtml.Append(string.Format("{0} cannot be more than {1} characters long", labelText, value));
+                maxLengthValidation.MergeAttribute("[hidden]", string.Format("!{0}.errors.maxlength", propName));
+                maxLengthValidation.InnerHtml.Append(string.Format("{0} должно быть минимум {1} символ(а) длиной.", labelText, value));
                 validationBox.InnerHtml.AppendHtml(maxLengthValidation);
                 inputTag.Attributes.Add("maxlength", value.ToString());
             }
 
             // add validation box
-            inputTag.MergeAttribute("#" + For.AngularPropertyName(), "ngModel");
+            inputTag.MergeAttribute("#" + propName, "ngModel");
 
             if (model.IsRequired)
             {
                 inputTag.Attributes.Add("required", "required");
 
-                validationBox.MergeAttribute("class", "alert alert-danger");
-                validationBox.MergeAttribute("*ngIf", For.AngularPropertyName() + ".errors");
-
                 TagBuilder validationMsgBox = new TagBuilder("div");
-                validationMsgBox.MergeAttribute("[hidden]", "!" + For.AngularPropertyName()  + ".errors.required");
-                validationMsgBox.InnerHtml.Append(labelText + " is required!");
+                validationMsgBox.MergeAttribute("[hidden]", "!" + propName  + ".errors.required");
+                validationMsgBox.InnerHtml.Append(labelText + " поле обьязательно к заполнению!");
 
                 validationBox.InnerHtml.AppendHtml(validationMsgBox);
             }

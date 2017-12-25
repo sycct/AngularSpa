@@ -1,40 +1,77 @@
-<div class="navbar navbar-inverse navbar-fixed-top">
+﻿<div class="navbar navbar-inverse navbar-fixed-top">    
     <div class="container">
-        <div class="navbar-header" (click)="setTitle('Home - AngularSpa')">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a routerLink="/home" routerLinkActive="active" class="navbar-brand">AngularSpa</a>
+        <div class="navbar-header">
+            <a routerLink="/home" routerLinkActive="active" class="navbar-brand">SPA Shop</a>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav mr-auto">
                 <li>
-                    <a class="nav-link" (click)="setTitle('Home - AngularSpa')" routerLink="/home" routerLinkActive="active">Home</a>
+                    <a class="nav-link" (click)="setTitle('Главная :: SPA Shop')" routerLink="/home" routerLinkActive="active">Главная</a>
                 </li>
                 <li>
-                    <a class="nav-link" (click)="setTitle('About - AngularSpa')" routerLink="/about">About</a>
+                    <a class="nav-link" (click)="setTitle('О магазине :: SPA Shop')" routerLink="/about">О магазине</a>
                 </li>
                 <li>
-                    <a class="nav-link" (click)="setTitle('Contact - AngularSpa')" routerLink="/contact">Contact</a>
+                    <a class="nav-link" (click)="setTitle('Контакты :: SPA Shop')" routerLink="/contact">Контакты</a>
                 </li>
-            </ul>
+                <li>
+                </li>
+                <li>
+                    <a class="nav-link" (click)="setTitle('Корзина :: SPA Shop')" routerLink="/cart">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                        <span class="text-white">Корзина</span>
+                    </a>
+                </li>
+           </ul>
+
+            
+            <p class="navbar-text navbar-right" [hidden]="!isLoggedIn()">
+                <a class="nav-link-text" (click)="setTitle('Личный кабинет :: SPA Shop')" routerLink="/profile">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="text-white">Личный кабинет</span>
+                </a>
+                <a class="nav-link-text" (click)="logout()" routerLink="/">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    <span class="text-white">Выход</span>
+                </a>
+            </p>
+
+            <p class="navbar-text navbar-right" [hidden]="isLoggedIn()">
+                Здравствуйте, Гость!
+                <a class="nav-link-text" (click)="setTitle('Вход :: SPA Shop')" routerLink="/login">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    <span class="text-white">Войти</span>
+                </a>
+                <a class="nav-link-text" (click)="setTitle('Регистрация :: SPA Shop')" routerLink="/register">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span class="text-white">Регистрация</span>
+                </a>
+            </p>
+
         </div>
     </div>
 </div>
 
-<div class="container body-content">
+<div id="wrap">
+    <div class="container-fluid body-content">
 
-    <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
 
-    @{
-        string razorServerSideData = "ASP.NET Core";
-    }
-
-    <hr />
-    <footer>
-        <p>&copy; 2017 - AngularSpa = (@razorServerSideData + {{angularClientSideData}})<sup>4</sup></p>
-    </footer>
+    </div>
 </div>
+
+<hr />
+<footer class="footer">
+    <ul>
+        <li>
+            <a class="nav-link" (click)="setTitle('Home - AngularSpa')" routerLink="/home" routerLinkActive="active">Главная</a>
+        </li>
+        <li>
+            <a class="nav-link" (click)="setTitle('About - AngularSpa')" routerLink="/about">О магазине</a>
+        </li>
+        <li>
+            <a class="nav-link" (click)="setTitle('Contact - AngularSpa')" routerLink="/contact">Контакты</a>
+        </li>
+    </ul>
+    <p class="text-center">&copy; 2017 - SPA Shop. Разработано при помощи ASP.NET Core 2 и Angular 5</p>
+</footer>

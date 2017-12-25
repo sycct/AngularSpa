@@ -25,7 +25,7 @@ namespace AngularSpa.TagHelpers
             labelTag.AddCssClass("control-label");
 
             var pTag = new TagBuilder("p");
-            pTag.AddCssClass("form-control-static");
+            pTag.AddCssClass("form-control-static form-tag-dd");
 
             if(Pipe == null || Pipe.Length <= 0)
                 pTag.InnerHtml.Append("{{" + For.AngularName() + "}}");

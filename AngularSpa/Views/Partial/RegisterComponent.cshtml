@@ -1,0 +1,24 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper "*,AngularSpa"
+@using AngularSpa.ViewModels
+@model RegisterViewModel
+
+<div class="jumbotron center-block register-form">
+    <h2>Регистрация</h2>
+
+    <div *ngIf="errorMessage != null">
+        <div class="error-box">{{ errorMessage  }}</div>
+    </div>
+
+    <form role="form" #registerForm="ngForm">
+        <div *ngIf="registerViewModel != null">
+            <tag-di for="Login"></tag-di>
+            <tag-di for="Password"></tag-di>
+            <tag-di for="Email"></tag-di>
+            <tag-di for="FullName"></tag-di>
+            <button type="button" (click)="register($event)" class="btn btn-default">Зарегистрироваться</button>
+            <span class="small">Уже с нами? <a routerLink="/login"> Входи тут!</a></span>
+        </div>
+    </form>
+</div>
+

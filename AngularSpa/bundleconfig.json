@@ -5,7 +5,10 @@
     "outputFileName": "wwwroot/css/site.min.css",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
-      "wwwroot/css/site.css"
+      "wwwroot/css/site.css",
+      "node_modules/primeng/resources/themes/omega/theme.css",
+      "node_modules/primeng/resources/primeng.min.css",
+      "node_modules/font-awesome/css/font-awesome.css"
     ]
   },
   {

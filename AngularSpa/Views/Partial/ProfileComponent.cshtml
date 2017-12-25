@@ -1,0 +1,33 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper "*,AngularSpa"
+@model AngularSpa.ViewModels.ProfileViewModel
+
+<h1>Профиль пользователя</h1>
+<hr />
+
+<div [hidden]="isLoggedIn()">
+    Вы не авторизированы. Для начала войдите в свой аккаунт.
+</div>
+
+<div [hidden]="!isLoggedIn()">
+    <div *ngIf="errorMessage != null">
+        <div class="error-box">{{ errorMessage  }}</div>
+    </div>
+
+    <div *ngIf="profileViewModel != null">
+        <div class="panel panel-primary profile-info">
+            <div class="panel-heading">Данные пользователя</div>
+            <div class="panel-body">
+                <tag-dd for="Id"></tag-dd>
+                <tag-dd for="Status"></tag-dd>
+                <tag-dd for="Login"></tag-dd>
+                <tag-dd for="FullName"></tag-dd>
+                <tag-dd for="EmailAddress"></tag-dd>
+                <tag-dd for="Country"></tag-dd>
+                <tag-dd for="City"></tag-dd>
+                <tag-dd for="Zip"></tag-dd>
+                <tag-dd for="Address"></tag-dd>
+            </div>
+        </div>
+    </div>
+</div>

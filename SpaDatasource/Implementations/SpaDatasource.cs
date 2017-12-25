@@ -86,7 +86,7 @@ namespace SpaDatasource.Implementations
         {
             CheckConnValidity("FindUserById");
 
-            string sql = "SELECT id, login, password_hash, full_name FROM users WHERE id = :id";
+            string sql = "SELECT id, login, password_hash, full_name, country, city, zip, address, phone, email, status FROM users WHERE id = :id";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
             command.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
             command.Parameters[0].Value = id;
@@ -98,7 +98,7 @@ namespace SpaDatasource.Implementations
         {
             CheckConnValidity("FindUserByName");
 
-            string sql = "SELECT id, login, password_hash, full_name FROM users WHERE login = :login";
+            string sql = "SELECT id, login, password_hash, full_name, country, city, zip, address, phone, email, status FROM users WHERE login = :login";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
             command.Parameters.Add(new NpgsqlParameter("login", NpgsqlDbType.Text));
             command.Parameters[0].Value = name;
@@ -110,7 +110,7 @@ namespace SpaDatasource.Implementations
         {
             CheckConnValidity("InsertUser");
 
-            string sql = "INSERT INTO users (login, password_hash, full_name) VALUES (:login, :password_hash, :full_name) RETURNING id";
+            string sql = "INSERT INTO users (login, password_hash, full_name, country, city, zip, address, phone, email, status) VALUES (:login, :password_hash, :full_name, :country, :city, :zip, :address, :phone, :email, :status) RETURNING id";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
 
             command.Parameters.Add(new NpgsqlParameter("login", NpgsqlDbType.Text));
@@ -120,9 +120,30 @@ namespace SpaDatasource.Implementations
             command.Parameters[1].Value = user.PasswordHash;
 
             command.Parameters.Add(new NpgsqlParameter("full_name", NpgsqlDbType.Text));
-            command.Parameters[2].Value = user.FullName;
+            command.Parameters[2].Value = user.FullName ?? (object)DBNull.Value;
 
-            long id = (long)command.ExecuteScalar();
+            command.Parameters.Add(new NpgsqlParameter("country", NpgsqlDbType.Text));
+            command.Parameters[3].Value = user.Country ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("city", NpgsqlDbType.Text));
+            command.Parameters[4].Value = user.City ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("zip", NpgsqlDbType.Text));
+            command.Parameters[5].Value = user.Zip ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("address", NpgsqlDbType.Text));
+            command.Parameters[6].Value = user.Address ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("phone", NpgsqlDbType.Text));
+            command.Parameters[7].Value = user.Phone ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("email", NpgsqlDbType.Text));
+            command.Parameters[8].Value = user.Email ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("status", NpgsqlDbType.Text));
+            command.Parameters[9].Value = user.Status ?? (object)DBNull.Value;
+
+            int id = (int)command.ExecuteScalar();
 
             user.Id = id;
         }
@@ -131,7 +152,7 @@ namespace SpaDatasource.Implementations
         {
             CheckConnValidity("UpdateUser");
 
-            string sql = "UPDATE users SET login = :login, password_hash = :password_hash, full_name = :full_name";
+            string sql = "UPDATE users SET login = :login, password_hash = :password_hash, full_name = :full_name, country = :country, city = :city, zip = :zip, address = :address, phone = :phone, email = :email, status = :status";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
 
             command.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
@@ -144,7 +165,28 @@ namespace SpaDatasource.Implementations
             command.Parameters[1].Value = user.PasswordHash;
 
             command.Parameters.Add(new NpgsqlParameter("full_name", NpgsqlDbType.Text));
-            command.Parameters[2].Value = user.FullName;
+            command.Parameters[2].Value = user.FullName ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("country", NpgsqlDbType.Text));
+            command.Parameters[3].Value = user.Country ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("city", NpgsqlDbType.Text));
+            command.Parameters[4].Value = user.City ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("zip", NpgsqlDbType.Text));
+            command.Parameters[5].Value = user.Zip ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("address", NpgsqlDbType.Text));
+            command.Parameters[6].Value = user.Address ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("phone", NpgsqlDbType.Text));
+            command.Parameters[7].Value = user.Phone ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("email", NpgsqlDbType.Text));
+            command.Parameters[8].Value = user.Email ?? (object)DBNull.Value;
+
+            command.Parameters.Add(new NpgsqlParameter("status", NpgsqlDbType.Text));
+            command.Parameters[9].Value = user.Status ?? (object)DBNull.Value;
 
             command.ExecuteNonQuery();
         }
@@ -155,7 +197,7 @@ namespace SpaDatasource.Implementations
 
             List<User> list = new List<User>();
 
-            string sql = "SELECT id, login, password_hash, full_name FROM users";
+            string sql = "SELECT id, login, password_hash, full_name, country, city, zip, address, phone, email, status FROM users";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
 
             NpgsqlDataReader dr = command.ExecuteReader();
@@ -180,7 +222,7 @@ namespace SpaDatasource.Implementations
 
             List<Order> list = new List<Order>();
 
-            string sql = "SELECT id, \"time\", user_id, email, currency, description FROM orders";
+            string sql = "SELECT id, user_id, description, create_date, pay_date, is_shipped, is_canceled FROM orders";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
 
             NpgsqlDataReader dr = command.ExecuteReader();
@@ -201,7 +243,7 @@ namespace SpaDatasource.Implementations
 
             List<Order> list = new List<Order>();
 
-            string sql = "SELECT id, \"time\", user_id, email, currency, description FROM orders WHERE user_id = :user_id";
+            string sql = "SELECT id, user_id, description, create_date, pay_date, is_shipped, is_canceled FROM orders WHERE user_id = :user_id";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
 
             command.Parameters.Add(new NpgsqlParameter("user_id", NpgsqlDbType.Integer));
@@ -223,7 +265,7 @@ namespace SpaDatasource.Implementations
         {
             CheckConnValidity("FindOrderById");
 
-            string sql = "SELECT id, \"time\", user_id, email, currency, description FROM orders WHERE id = :id";
+            string sql = "SELECT id, user_id, description, create_date, pay_date, is_shipped, is_canceled FROM orders WHERE id = :id";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
 
             command.Parameters.Add(new NpgsqlParameter("id", NpgsqlDbType.Integer));
@@ -236,25 +278,28 @@ namespace SpaDatasource.Implementations
         {
             CheckConnValidity("InsertOrder");
 
-            string sql = "INSERT INTO orders (\"time\", user_id, email, currency, description) VALUES (:time, :user_id, :email, :currency, :description) RETURNING id";
+            string sql = "INSERT INTO orders (user_id, description, create_date, pay_date, is_shipped, is_canceled) VALUES (:id, :user_id, :description, :create_date, :pay_date, :is_shipped, :is_canceled) RETURNING id";
             NpgsqlCommand command = CreateCommandWithTimeout(sql, _Conn);
 
-            command.Parameters.Add(new NpgsqlParameter("time", NpgsqlDbType.TimeTZ));
-            command.Parameters[0].Value = order.Time;
-
             command.Parameters.Add(new NpgsqlParameter("user_id", NpgsqlDbType.Integer));
-            command.Parameters[1].Value = order.UserId;
-
-            command.Parameters.Add(new NpgsqlParameter("email", NpgsqlDbType.Text));
-            command.Parameters[2].Value = order.EmailAddress;
-
-            command.Parameters.Add(new NpgsqlParameter("currency", NpgsqlDbType.Numeric));
-            command.Parameters[3].Value = order.Currency;
+            command.Parameters[0].Value = order.UserId;
 
             command.Parameters.Add(new NpgsqlParameter("description", NpgsqlDbType.Text));
-            command.Parameters[4].Value = order.OrderDescription;
+            command.Parameters[1].Value = order.Description ?? (object)DBNull.Value;
 
-            long id = (long)command.ExecuteScalar();
+            command.Parameters.Add(new NpgsqlParameter("create_date", NpgsqlDbType.TimestampTZ));
+            command.Parameters[2].Value = order.CreateDate;
+
+            command.Parameters.Add(new NpgsqlParameter("pay_date", NpgsqlDbType.TimestampTZ));
+            command.Parameters[3].Value = order.PayDate;
+
+            command.Parameters.Add(new NpgsqlParameter("is_shipped", NpgsqlDbType.Boolean));
+            command.Parameters[4].Value = order.IsShipped;
+
+            command.Parameters.Add(new NpgsqlParameter("is_canceled", NpgsqlDbType.Boolean));
+            command.Parameters[5].Value = order.IsCanceled;
+
+            int id = (int)command.ExecuteScalar();
 
             order.Id = id;
         }
@@ -306,12 +351,19 @@ namespace SpaDatasource.Implementations
         private User GetUserFromDataReader(NpgsqlDataReader dr)
         {
             return new User
-                {
-                    Id             = dr.GetInt64(0),
-                    Login          = dr.GetString(1), 
-                    PasswordHash   = dr.GetString(2),
-                    FullName       = dr.IsDBNull(3) ? null : dr.GetString(3)
-                };
+            {
+                Id              = dr.GetInt32(0),
+                Login           = dr.GetString(1), 
+                PasswordHash    = dr.GetString(2),
+                FullName        = dr.IsDBNull(3) ? null : dr.GetString(3),
+                Country         = dr.IsDBNull(4) ? null : dr.GetString(4),
+                City            = dr.IsDBNull(4) ? null : dr.GetString(4),
+                Zip             = dr.IsDBNull(5) ? null : dr.GetString(5),
+                Address         = dr.IsDBNull(6) ? null : dr.GetString(6),
+                Phone           = dr.IsDBNull(7) ? null : dr.GetString(7),
+                Email           = dr.IsDBNull(8) ? null : dr.GetString(8),
+                Status          = dr.IsDBNull(9) ? null : dr.GetString(9)
+            };
         }
 
         private Order GetOrderFromCommand(NpgsqlCommand command)
@@ -333,12 +385,13 @@ namespace SpaDatasource.Implementations
         {
             return new Order
                 {
-                    Id                  = dr.GetInt64(0),
-                    Time                = dr.GetDateTime(1), 
-                    UserId              = dr.GetInt32(2),
-                    EmailAddress        = dr.GetString(3),
-                    Currency            = dr.GetDecimal(4),
-                    OrderDescription    = dr.IsDBNull(5) ? null : dr.GetString(5)
+                    Id                  = dr.GetInt32(0),
+                    UserId              = dr.GetInt32(1), 
+                    Description         = dr.IsDBNull(2) ? "" : dr.GetString(2),
+                    CreateDate          = dr.IsDBNull(3) ? DateTime.MinValue : dr.GetDateTime(3),
+                    PayDate             = dr.IsDBNull(4) ? DateTime.MinValue : dr.GetDateTime(4),
+                    IsShipped           = dr.GetBoolean(5),
+                    IsCanceled          = dr.GetBoolean(6)
                 };
         }
 
