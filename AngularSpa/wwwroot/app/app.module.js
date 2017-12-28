@@ -8,26 +8,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
-var app_routing_1 = require("./app.routing");
 var common_1 = require("@angular/common");
-var app_component_1 = require("./app.component");
 var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
-var Orders_services_1 = require("./services/Orders.services");
+var app_routing_1 = require("./app.routing");
+var app_component_1 = require("./components/app.component");
+var auth_service_1 = require("./security/auth.service");
+var profile_service_1 = require("./services/profile.service");
 require("./rxjs-operators");
 // enableProdMode();
-var AppModule = (function () {
+var AppModule = /** @class */ (function () {
     function AppModule() {
     }
+    AppModule = __decorate([
+        core_1.NgModule({
+            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, app_routing_1.routing],
+            declarations: [app_component_1.AppComponent, app_routing_1.routedComponents],
+            bootstrap: [app_component_1.AppComponent],
+            providers: [
+                auth_service_1.AuthService,
+                profile_service_1.ProfileService,
+                platform_browser_1.Title,
+                { provide: common_1.APP_BASE_HREF, useValue: '/' }
+            ]
+        })
+    ], AppModule);
     return AppModule;
 }());
-AppModule = __decorate([
-    core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, app_routing_1.routing],
-        declarations: [app_component_1.AppComponent, app_routing_1.routedComponents],
-        providers: [Orders_services_1.OrdersService, platform_browser_1.Title, { provide: common_1.APP_BASE_HREF, useValue: '/' }],
-        bootstrap: [app_component_1.AppComponent]
-    })
-], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map
